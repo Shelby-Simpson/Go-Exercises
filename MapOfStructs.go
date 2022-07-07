@@ -1,3 +1,5 @@
+// Shelby Simpson
+// Map of Structs
 package main
 
 import (
