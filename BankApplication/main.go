@@ -1,5 +1,5 @@
 // Shelby Simpson
-// Bank Application
+// Module 6 Activity: Bank Application
 package main
 
 import (
