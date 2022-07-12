@@ -1,40 +1,34 @@
 // Shelby Simpson
-// Module 6 Activity: Bank Application
+// Bank Application
 package main
 
-import (
-	"BankApplication/BankAccount"
-	"BankApplication/Entity"
-	"BankApplication/Wallet"
-)
-
 func main() {
-	wallet1 := Wallet.Wallet{
+	wallet1 := Wallet{
 		ID:       "1",
-		Accounts: make([]BankAccount.BankAccount, 0),
-		Owner: Entity.Entity{
+		Accounts: make([]BankAccount, 0),
+		Owner: Entity{
 			ID:         1,
 			Address:    "123 Street St",
 			EntityType: "Individual",
 		},
 	}
-	wallet1.Accounts = append(wallet1.Accounts, BankAccount.BankAccount{
+	wallet1.Accounts = append(wallet1.Accounts, BankAccount{
 		AccountNo:    "1",
 		AccountOwner: wallet1.Owner,
 		Balance:      50,
 		InterestRate: .01,
 		AccountType:  "checking",
 	})
-	wallet2 := Wallet.Wallet{
+	wallet2 := Wallet{
 		ID:       "2",
-		Accounts: make([]BankAccount.BankAccount, 0),
-		Owner: Entity.Entity{
+		Accounts: make([]BankAccount, 0),
+		Owner: Entity{
 			ID:         2,
 			Address:    "123 Road Rd",
-			EntityType: "Business",
+			entityType: "Business",
 		},
 	}
-	wallet2.Accounts = append(wallet2.Accounts, BankAccount.BankAccount{
+	wallet2.Accounts = append(wallet2.Accounts, BankAccount{
 		AccountNo:    "2",
 		AccountOwner: wallet2.Owner,
 		Balance:      100,
