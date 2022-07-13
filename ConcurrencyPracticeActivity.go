@@ -10,18 +10,21 @@ import (
 var wg sync.WaitGroup
 
 func main() {
+	ch1 := make(chan bool, 0)
+	ch2 := make(chan int, 0)
 	wg.Add(1)
 	go func() {
-		for i := 100; i >= 0; i-- {
-			fmt.Println("Anon func 1:", i)
+		for {
+			if ok := <-ch1; ok {
+				fmt.Println("Received:", <-ch2)
+			}
 		}
-		wg.Done()
 	}()
-	wg.Wait()
-	wg.Add(1)
 	go func() {
-		for i := 0; i <= 100; i++ {
-			fmt.Println("Anon func 2:", i)
+		for i := 0; i <= 10; i++ {
+			fmt.Println("Sent:", i)
+			ch1 <- true
+			ch2 <- i
 		}
 		wg.Done()
 	}()
