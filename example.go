@@ -2,18 +2,52 @@ package main
 
 import (
 	"fmt"
+	"math"
+	"time"
 )
 
+// func Mix(s, r chan struct{}) {
+// 	for {
+// 		select {
+// 		case <-s:
+// 			fmt.Println("Received from Bob")
+// 			r <- struct{}{}
+// 		case <-r:
+// 			fmt.Println("Received from Johan")
+// 			s <- struct{}{}
+// 		}
+// 	}
+// }
+
 func main() {
-	c := make(chan int)
-	go func() {
-		for i := 0; i < 10; i++ {
-			c <- i
+	num := make(chan int)
+	go generateNum(num)
+	go checkPrime(num)
+	time.Sleep(time.Second * 1)
+}
+
+func generateNum(num chan<- int) {
+	for i := 2; i < 30; i++ {
+		num <- i
+		// time.Sleep(time.Millisecond)
+	}
+}
+
+func checkPrime(num <-chan int) {
+	for {
+		tempNum := <-num
+		sqrtNum := math.Sqrt(float64(tempNum))
+		prime := true
+		for j := 2; j <= int(sqrtNum); j++ {
+			if tempNum%j == 0 {
+				prime = false
+				break
+			}
 		}
-		close(c)
-	}()
-	for n := range c {
-		fmt.Println(n)
+		if prime {
+			fmt.Println(tempNum, "is prime.")
+		}
+		// time.Sleep(time.Millisecond)
 	}
 }
 
