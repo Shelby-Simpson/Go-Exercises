@@ -2,34 +2,31 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"os"
 )
 
-func goRoutine(ch1 <-chan bool, ch2 chan<- bool) {
-	for i := 0; i < 10; i++ {
-		select {
-		case <-ch1:
-			fmt.Println(i)
-			ch2 <- true
-		}
-	}
-}
-
-func anotherGoRoutine(ch1 chan<- bool, ch2 <-chan bool) {
-	for i := 10; i > 0; i-- {
-		select {
-		case <-ch2:
-			fmt.Println(i)
-			ch1 <- true
-		}
-	}
-}
-
 func main() {
-	ch1, ch2 := make(chan bool), make(chan bool)
-	go goRoutine(ch1, ch2)
-	go anotherGoRoutine(ch1, ch2)
-	ch1 <- true
-	time.Sleep(time.Millisecond * 2)
-	fmt.Println("Main func")
+	var numChars int
+	fmt.Print("Please enter number of characters to read from offset: ")
+	fmt.Scan(&numChars)
+	f, err := os.Open("/Users/shelbysimpson/Documents/golang/fileio/flatland1.txt")
+	fmt.Println(err)
+
+	// skip the first 100 bytes
+	s, err := f.Seek(-100, 2)
+	fmt.Println(err) // nil if no isssues
+
+	// display the offset
+	fmt.Println(s)
+
+	// read 5 bytes starting from the offset
+	data := make([]byte, numChars)
+	n, err := f.Read(data)
+
+	fmt.Println(err) // nil if no issues
+	fmt.Println("Bytes read", n)
+	fmt.Println("Reading starting from byte", s, ":", string(data[:n]))
+
+	// close the file
+	f.Close()
 }
